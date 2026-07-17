@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MENU | Price List</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;800&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#4a3c31;
+    --ink-soft:#8a725f;
+    --paper:#faf5ec;
+    --paper-soft:#f2e8da;
+    --brass:#bd9a52;
+    --brass-soft:#dcc08a;
+    --rose:#d3ab9e;
+    --line:rgba(250,245,236,0.28);
+    --line-dark:rgba(74,60,49,0.14);
+    --muted:#a89a86;
+    --muted-dark:#8c7c6a;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Zen Kaku Gothic New', sans-serif;
+    font-weight:300;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  .en{
+    font-family:'Cormorant Garamond', serif;
+  }
+
+  .mincho{
+    font-family:'Shippori Mincho', serif;
+  }
+
+  /* ---------- reveal ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(18px);
+    transition:opacity 0.9s ease, transform 0.9s ease;
+  }
+  .reveal.in{
+    opacity:1;
+    transform:translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1; transform:none; transition:none;}
+    html{scroll-behavior:auto;}
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:100svh;
+    background:radial-gradient(120% 90% at 50% -10%, #ab8f78 0%, #8a705c 55%, #6f5947 100%);
+    color:var(--paper);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:8vh 6vw 10vh;
+    overflow:hidden;
+  }
+
+  .hero-strand{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    opacity:0.55;
+    pointer-events:none;
+  }
+
+  .hero-eyebrow{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    letter-spacing:0.42em;
+    font-size:12px;
+    color:var(--brass-soft);
+    text-transform:uppercase;
+    margin-bottom:28px;
+    z-index:2;
+  }
+
+  .hero-title{
+    font-family:'Shippori Mincho', serif;
+    font-weight:600;
+    font-size:clamp(46px, 9vw, 108px);
+    letter-spacing:0.14em;
+    line-height:1.15;
+    z-index:2;
+  }
+  .hero-title small{
+    display:block;
+    font-size:0.33em;
+    letter-spacing:0.12em;
+    font-weight:400;
+    color:var(--rose);
+    margin-top:26px;
+    line-height:1.9;
+    max-width:16em;
+    margin-left:auto;
+    margin-right:auto;
+  }
+
+  .hero-copy{
+    max-width:520px;
+    margin-top:38px;
+    font-size:14.5px;
+    line-height:2.15;
+    letter-spacing:0.05em;
+    color:#cfc9bd;
+    z-index:2;
+  }
+
+  .hero-scroll{
+    margin-top:64px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+    z-index:2;
+  }
+  .hero-scroll span{
+    font-family:'Cormorant Garamond', serif;
+    font-size:11px;
+    letter-spacing:0.35em;
+    color:#e6dccb;
+  }
+  .hero-scroll .stem{
+    width:1px;
+    height:52px;
+    background:linear-gradient(var(--brass-soft), transparent);
+    animation:stem 2.4s ease-in-out infinite;
+  }
+  @keyframes stem{
+    0%,100%{transform:scaleY(1); opacity:0.9;}
+    50%{transform:scaleY(0.55); opacity:0.4;}
+  }
+
+  /* ---------- COMB DIVIDER (signature motif) ---------- */
+  .comb{
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    gap:6px;
+    height:34px;
+    margin:0 auto;
+  }
+  .comb i{
+    display:block;
+    width:1px;
+    background:var(--brass);
+    opacity:0.55;
+  }
+  .comb.on-dark i{ background:var(--brass-soft); opacity:0.7;}
+
+  /* ---------- SECTION SHELL ---------- */
+  .section{
+    padding:120px 6vw;
+    max-width:1040px;
+    margin:0 auto;
+    position:relative;
+  }
+
+  .cat-head{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    margin-bottom:70px;
+  }
+  .cat-en{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size:15px;
+    letter-spacing:0.5em;
+    color:var(--brass);
+    margin-bottom:18px;
+  }
+  .cat-jp{
+    font-family:'Shippori Mincho', serif;
+    font-size:clamp(28px, 4vw, 40px);
+    font-weight:600;
+    letter-spacing:0.22em;
+  }
+  .cat-note{
+    margin-top:20px;
+    font-size:13px;
+    color:var(--muted-dark);
+    letter-spacing:0.04em;
+    max-width:460px;
+    line-height:1.9;
+  }
+
+  /* ---------- PRICE LIST ---------- */
+  .price-list{
+    display:flex;
+    flex-direction:column;
+  }
+  .price-row{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:24px;
+    padding:26px 4px;
+    border-bottom:1px solid var(--line-dark);
+    transition:padding-left 0.4s ease, border-color 0.4s ease;
+  }
+  .price-row:first-child{
+    border-top:1px solid var(--line-dark);
+  }
+  .price-row:hover{
+    padding-left:14px;
+    border-color:var(--brass);
+  }
+  .price-name{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    font-size:16px;
+    letter-spacing:0.06em;
+  }
+  .price-name .tag{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size:12px;
+    letter-spacing:0.1em;
+    color:var(--rose);
+    white-space:nowrap;
+    border:1px solid var(--rose);
+    border-radius:999px;
+    padding:2px 10px;
+  }
+  .price-sub{
+    display:block;
+    font-size:11.5px;
+    color:var(--muted-dark);
+    margin-top:6px;
+    letter-spacing:0.03em;
+  }
+  .price-value{
+    font-family:'Cormorant Garamond', serif;
+    font-size:22px;
+    font-weight:500;
+    letter-spacing:0.03em;
+    white-space:nowrap;
+  }
+  .price-value .cur{
+    font-size:13px;
+    margin-right:2px;
+    color:var(--muted-dark);
+  }
+  .price-value .tilde{
+    font-size:14px;
+    color:var(--muted-dark);
+    margin-left:2px;
+  }
+
+  /* ---------- DARK VARIANT (COLOR section) ---------- */
+  .section.dark{
+    background:#8a705c;
+    color:var(--paper);
+    max-width:none;
+    padding-left:6vw;
+    padding-right:6vw;
+  }
+  .section.dark .inner{
+    max-width:1040px;
+    margin:0 auto;
+  }
+  .section.dark .cat-jp{ color:var(--paper);}
+  .section.dark .price-row{ border-bottom:1px solid var(--line);}
+  .section.dark .price-row:first-child{ border-top:1px solid var(--line);}
+  .section.dark .price-value .cur,
+  .section.dark .price-value .tilde{ color:#e8dfd1;}
+  .section.dark .price-sub{ color:#e8dfd1;}
+  .section.dark .cat-note{ color:#f1e9db;}
+
+  /* ---------- price note callout ---------- */
+  .callout{
+    margin-top:44px;
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+    padding:22px 24px;
+    border:1px solid var(--rose);
+    border-radius:2px;
+    background:rgba(201,168,155,0.08);
+  }
+  .section.dark .callout{
+    border-color:var(--brass-soft);
+    background:rgba(182,144,63,0.08);
+  }
+  .callout .mark{
+    font-family:'Shippori Mincho', serif;
+    font-size:18px;
+    color:var(--rose);
+    line-height:1;
+  }
+  .section.dark .callout .mark{ color:var(--brass-soft);}
+  .callout p{
+    font-size:12.5px;
+    line-height:2;
+    letter-spacing:0.04em;
+    color:var(--muted-dark);
+  }
+  .section.dark .callout p{ color:#c7c1b3;}
+
+  /* ---------- DETAIL LINK BUTTON ---------- */
+  .detail-wrap{
+    display:flex;
+    justify-content:center;
+    margin-top:48px;
+  }
+  .detail-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+    padding:14px 34px;
+    border:1px solid var(--ink);
+    border-radius:999px;
+    color:var(--ink);
+    text-decoration:none;
+    font-size:12.5px;
+    letter-spacing:0.22em;
+    font-family:'Zen Kaku Gothic New', sans-serif;
+    transition:background 0.4s ease, color 0.4s ease, letter-spacing 0.4s ease;
+  }
+  .detail-btn:hover{
+    background:var(--ink);
+    color:var(--paper);
+    letter-spacing:0.28em;
+  }
+  .detail-btn .arrow{
+    font-family:'Cormorant Garamond', serif;
+    font-size:15px;
+    transition:transform 0.4s ease;
+  }
+  .detail-btn:hover .arrow{ transform:translateX(4px);}
+
+  .section.dark .detail-btn{
+    border-color:var(--paper);
+    color:var(--paper);
+  }
+  .section.dark .detail-btn:hover{
+    background:var(--paper);
+    color:#6f5947;
+  }
+
+  /* ---------- FOOTER / CTA ---------- */
+  .cta{
+    background:var(--paper-soft);
+    text-align:center;
+    padding:130px 6vw 110px;
+    position:relative;
+  }
+  .cta-eyebrow{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    letter-spacing:0.4em;
+    font-size:12px;
+    color:var(--brass);
+    margin-bottom:24px;
+  }
+  .cta-title{
+    font-family:'Shippori Mincho', serif;
+    font-size:clamp(26px, 4vw, 38px);
+    font-weight:600;
+    letter-spacing:0.12em;
+    line-height:1.7;
+    margin-bottom:44px;
+  }
+  .cta-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:16px;
+    padding:18px 46px;
+    border:1px solid var(--ink);
+    color:var(--ink);
+    text-decoration:none;
+    font-size:13px;
+    letter-spacing:0.28em;
+    font-family:'Zen Kaku Gothic New', sans-serif;
+    transition:background 0.4s ease, color 0.4s ease;
+  }
+  .cta-btn:hover{
+    background:var(--ink);
+    color:var(--paper);
+  }
+  .foot-mini{
+    margin-top:56px;
+    font-family:'Shippori Mincho', serif;
+    font-size:21px;
+    letter-spacing:0.28em;
+    color:var(--muted-dark);
+  }
+
+  .foot-tax{
+    position:absolute;
+    top:0;
+    right:6vw;
+    transform:translateY(-50%);
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size:12px;
+    letter-spacing:0.3em;
+    color:var(--muted);
+    white-space:nowrap;
+  }
+
+  @media (max-width:640px){
+    .section{ padding:90px 7vw;}
+    .cta{ padding:100px 7vw 90px;}
+    .price-row{ flex-direction:column; align-items:flex-start; gap:10px;}
+    .price-value{ align-self:flex-end;}
+    .hero-copy{ font-size:13.5px;}
+  }
+/* ---------- PAGE BUTTONS ---------- */.page-buttons{position:fixed;top:18px;right:6vw;z-index:1000;display:flex;gap:10px}.page-buttons a{display:flex;align-items:center;justify-content:center;min-width:84px;min-height:40px;padding:10px 16px;border-radius:999px;background:rgba(250,245,236,.92);border:1px solid rgba(74,60,49,.18);color:var(--ink);text-decoration:none;font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:.14em;box-shadow:0 8px 20px rgba(0,0,0,.12)}.page-buttons a:hover{background:var(--ink);color:var(--paper)}@media(max-width:640px){.page-buttons{top:12px;right:5vw;gap:7px}.page-buttons a{min-width:70px;min-height:36px;padding:8px 12px;font-size:11px}}</style>
+</head>
+<body>
+<div class="page-buttons"><a href="https://www.lyckahairsalon.com/">HOME</a><a href="https://lyckapc.github.io/coupon/">COUPON</a></div>
+
+<!-- HERO -->
+<section class="hero">
+  <svg class="hero-strand" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <path d="M -50 380 C 200 280, 320 480, 560 360 S 900 200, 1250 340" stroke="#b6903f" stroke-width="1" fill="none" opacity="0.35"/>
+    <path d="M -50 460 C 220 560, 380 320, 620 460 S 960 620, 1250 440" stroke="#c9a89b" stroke-width="1" fill="none" opacity="0.28"/>
+    <path d="M -50 300 C 260 220, 400 400, 660 260 S 1000 120, 1250 260" stroke="#f4efe4" stroke-width="0.6" fill="none" opacity="0.15"/>
+  </svg>
+  <p class="hero-eyebrow en">Price&nbsp;List</p>
+  <h1 class="hero-title">MENU<small>「褒められる美髪に」<br>なりたいを叶えるケアサロン</small></h1>
+  <div class="hero-scroll">
+    <div class="stem"></div>
+    <span>SCROLL</span>
+  </div>
+</section>
+
+<!-- CUT -->
+<section class="section reveal" id="cut">
+  <div class="cat-head">
+    <span class="cat-en">Cut</span>
+    <h2 class="cat-jp">カット</h2>
+    <p class="cat-note">骨格・髪質・毛流れを見極め、再現性のあるスタイルに</p>
+  </div>
+  <div class="comb" aria-hidden="true"></div>
+  <div class="price-list" style="margin-top:56px;">
+    <div class="price-row">
+      <div class="price-name">CUT
+        <span class="price-sub">カウンセリング・シャンプー込み</span>
+      </div>
+      <div class="price-value"><span class="cur">¥</span>4,500<span class="tilde">〜</span></div>
+    </div>
+  </div>
+  <div class="detail-wrap">
+    <a class="detail-btn" href="cut-detail.html">カットの詳細を見る<span class="arrow">→</span></a>
+  </div>
+</section>
+
+<!-- COLOR (dark) -->
+<section class="section dark reveal" id="color">
+  <div class="inner">
+    <div class="cat-head">
+      <span class="cat-en">Color</span>
+      <h2 class="cat-jp">カラー</h2>
+      <p class="cat-note">頭皮への負担を抑えながら、潤いとツヤにこだわります。</p>
+    </div>
+    <div class="comb on-dark" aria-hidden="true"></div>
+    <div class="price-list" style="margin-top:56px;">
+      <div class="price-row">
+        <div class="price-name">RETOUCH<span class="tag">リタッチ</span></div>
+        <div class="price-value"><span class="cur">¥</span>5,000<span class="tilde">〜</span></div>
+      </div>
+      <div class="price-row">
+        <div class="price-name">FULL COLOR<span class="tag">フル</span></div>
+        <div class="price-value"><span class="cur">¥</span>7,000<span class="tilde">〜</span></div>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="mark">※</span>
+      <p>ケアカラー・髪質改善カラーは薬剤や工程が異なるため、メニューにより価格が変わります。<br>
+      詳しくはスタイリストまでお気軽にご相談ください。</p>
+    </div>
+    <div class="detail-wrap">
+      <a class="detail-btn" href="color-detail.html">カラーの詳細を見る<span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- PERM -->
+<section class="section reveal" id="perm">
+  <div class="cat-head">
+    <span class="cat-en">Perm / Straight</span>
+    <h2 class="cat-jp">パーマ・ストレート</h2>
+    <p class="cat-note">柔らかな動きと質感を両立させる、髪にやさしい薬剤を使用。</p>
+  </div>
+  <div class="comb" aria-hidden="true"></div>
+  <div class="price-list" style="margin-top:56px;">
+    <div class="price-row">
+      <div class="price-name">PERM</div>
+      <div class="price-value"><span class="cur">¥</span>6,500<span class="tilde">〜</span></div>
+    </div>
+    <div class="price-row">
+      <div class="price-name">DIGITAL PERM<span class="tag">デジタルパーマ</span></div>
+      <div class="price-value"><span class="cur">¥</span>8,000</div>
+    </div>
+    <div class="price-row">
+      <div class="price-name">ストリートメント</div>
+      <div class="price-value"><span class="cur">¥</span>9,000</div>
+    </div>
+    <div class="price-row">
+      <div class="price-name">縮毛矯正</div>
+      <div class="price-value"><span class="cur">¥</span>13,000<span class="tilde">〜</span></div>
+    </div>
+  </div>
+  <div class="detail-wrap">
+    <a class="detail-btn" href="perm-detail.html">パーマの詳細を見る<span class="arrow">→</span></a>
+  </div>
+</section>
+
+<!-- TREATMENT (dark) -->
+<section class="section dark reveal" id="treatment">
+  <div class="inner">
+    <div class="cat-head">
+      <span class="cat-en">Treatment</span>
+      <h2 class="cat-jp">トリートメント</h2>
+      <p class="cat-note">繰り返すほどキレイに、内側から補修しツヤと潤いを。</p>
+    </div>
+    <div class="comb on-dark" aria-hidden="true"></div>
+    <div class="price-list" style="margin-top:56px;">
+      <div class="price-row">
+        <div class="price-name">TREATMENT</div>
+        <div class="price-value"><span class="cur">¥</span>2,500<span class="tilde">〜</span></div>
+      </div>
+      <div class="price-row">
+        <div class="price-name">Oggi Otto<span class="price-sub">髪質改善トリートメント</span></div>
+        <div class="price-value"><span class="cur">¥</span>4,500<span class="tilde">〜</span></div>
+      </div>
+    </div>
+    <div class="detail-wrap">
+      <a class="detail-btn" href="treatment-detail.html">トリートメントの詳細を見る<span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- HEAD SPA -->
+<section class="section reveal" id="headspa">
+  <div class="cat-head">
+    <span class="cat-en">Head Spa</span>
+    <h2 class="cat-jp">ヘッドスパ</h2>
+    <p class="cat-note">頭皮環境を整え、深いリラックスへ。</p>
+  </div>
+  <div class="comb" aria-hidden="true"></div>
+  <div class="price-list" style="margin-top:56px;">
+    <div class="price-row">
+      <div class="price-name">HEAD SPA<span class="tag">ヘッドスパ</span></div>
+      <div class="price-value"><span class="cur">¥</span>2,500<span class="tilde">〜</span></div>
+    </div>
+    <div class="price-row">
+      <div class="price-name">頭頭脳<span class="price-sub">トトノウ</span></div>
+      <div class="price-value"><span class="cur">¥</span>9,000</div>
+    </div>
+  </div>
+  <div class="detail-wrap">
+    <a class="detail-btn" href="headspa-detail.html">ヘッドスパの詳細を見る<span class="arrow">→</span></a>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta reveal">
+  <span class="foot-tax">TAX別</span>
+  <p class="foot-mini">ずっと綺麗を叶える</p>
+</section>
+
+<script>
+  const combs = document.querySelectorAll('.comb');
+  combs.forEach(c => {
+    const n = 17;
+    for(let i=0;i<n;i++){
+      const tooth = document.createElement('i');
+      const center = (n-1)/2;
+      const dist = Math.abs(i-center);
+      const h = 34 - dist*3.4;
+      tooth.style.height = Math.max(h,6)+'px';
+      c.appendChild(tooth);
+    }
+  });
+
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        observer.unobserve(e.target);
+      }
+    });
+  },{threshold:0.15});
+  document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+</script>
+
+</body>
+</html>
